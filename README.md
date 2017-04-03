@@ -68,6 +68,8 @@ spark based array exploder - convert array values into rows
 - optionally schema enforcement -> reliable data structures over time
 - Flatten array as string and reach trough of all other attributes.
 
+## Open decisions
+- handling of partitioned  output. Just overwrite given partion or config optional output partions (maybe for first run only)
 
 ## FAQ
 1. What if entity has no array?
