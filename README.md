@@ -11,7 +11,11 @@ spark based array exploder - convert array values into rows
       "aliquip"
     ]
 ```
-Explode 
+## Options
+- enforceSchema
+- overwrite
+- ignoreNoArray
+
 ## Features
 
 - supports `parquet` and `json` as fileformat 
@@ -40,9 +44,10 @@ Explode
 ```    
     
 - datatype agnostic: just specify the name of the array. Spaxploder will take the values and convert them into rows, whatever datatype it is. Even nested structures are converted.
--- supported datatypes: all of spark 2.1
+- supported datatypes: all of spark 2.1
 
 ## Not yet implemented
+- ignore not defined array in an entity. Some entities have an array some not (even not set as null). Spaxploder will ignore these entities without an exeption *to test*
 - unnest structs -> would need more configuration
 ```
 "friends": [
@@ -65,4 +70,7 @@ Explode
 
 
 ## FAQ
-
+1. What if entity has no array?
+These rows will be ignored. Spaxploder will continue with next entity.
+2. What if array in entity is null?
+As there are no values in array no rows will be created for that entity
