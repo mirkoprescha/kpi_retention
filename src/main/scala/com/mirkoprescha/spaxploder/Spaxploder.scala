@@ -1,10 +1,10 @@
-package spaxploder
+package com.mirkoprescha.spaxploder
 
 import net.sourceforge.argparse4j.ArgumentParsers
 import net.sourceforge.argparse4j.inf.{ArgumentParser, ArgumentParserException, Namespace}
 
 
-object ArrayExploder {
+object Spaxploder {
 
   def main(args: Array[String]) {
 
