@@ -7,7 +7,9 @@ import org.apache.spark.sql._
   */
 class ArrayTransformer {
   def explodedArray(
-                             rawArray: DataFrame
+                             rawArray: DataFrame,
+                             arrayName: String,
+                             primaryKey: String
                            )(implicit spark: SparkSession): DataFrame = {
     ???
   }

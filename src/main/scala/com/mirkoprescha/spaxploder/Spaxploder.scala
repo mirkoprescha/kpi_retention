@@ -19,6 +19,7 @@ object Spaxploder {
 
   }
 
+
   def parseArgs(args: Array[String]): Namespace = {
     val parser: ArgumentParser = ArgumentParsers.newArgumentParser("spaxploder").description("SPark Array eXPLODER - convert array values into rows").defaultHelp(true)
     parser.addArgument("--input.path").required(true).help("path to input files containing array")
