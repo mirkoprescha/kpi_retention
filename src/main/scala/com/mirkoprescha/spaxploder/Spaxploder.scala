@@ -17,8 +17,8 @@ object Spaxploder {
     val outputFileformat = parsedArgs.getString("output.fileformat")
 
 
-    val rawArray = new ArrayReader().rawArrayFromInputPath(inputPath,inputFileformat,arrayName, primaryKey)
-    val explodedArray = new ArrayTransformer().explodedArray(rawArray,arrayName, primaryKey)
+//    val rawArray = new ArrayReader().rawArrayFromInputPath(inputPath,inputFileformat,arrayName, primaryKey)
+//    val explodedArray = new ArrayTransformer().explodedArray(rawArray,arrayName, primaryKey)
   }
 
   def run () = {
