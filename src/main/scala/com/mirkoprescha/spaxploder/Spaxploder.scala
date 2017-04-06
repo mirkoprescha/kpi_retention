@@ -17,8 +17,13 @@ object Spaxploder {
     val outputFileformat = parsedArgs.getString("output.fileformat")
 
 
+    val rawArray = new ArrayReader().rawArrayFromInputPath(inputPath,inputFileformat,arrayName, primaryKey)
+    val explodedArray = new ArrayTransformer().explodedArray(rawArray,arrayName, primaryKey)
   }
 
+  def run () = {
+
+  }
 
   def parseArgs(args: Array[String]): Namespace = {
     val parser: ArgumentParser = ArgumentParsers.newArgumentParser("spaxploder").description("SPark Array eXPLODER - convert array values into rows").defaultHelp(true)

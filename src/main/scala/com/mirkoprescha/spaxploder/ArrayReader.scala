@@ -1,6 +1,6 @@
 package com.mirkoprescha.spaxploder
 
-import org.apache.spark.sql.{DataFrame, SparkSession, Dataset, functions}
+import org.apache.spark.sql._
 
 
 class ArrayReader {
@@ -10,8 +10,8 @@ class ArrayReader {
                               inputFileformat: String,
                               arrayName: String,
                               primaryKey: String
-                            )(implicit spark: SparkSession): DataFrame = {
-    val df: DataFrame = spark.read.format(inputFileformat).load(inputFileformat).select(primaryKey,arrayName)
+                            )(implicit spark: SparkSession): Dataset[Row] = {
+    val df: Dataset[Row] = spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
     df
   }
 
