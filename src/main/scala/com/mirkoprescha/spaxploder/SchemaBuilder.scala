@@ -1,7 +1,6 @@
 package com.mirkoprescha.spaxploder
 
-import org.apache.spark.sql._
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.{DataType, StructType}
 
 
 class SchemaBuilder {
@@ -15,4 +14,11 @@ class SchemaBuilder {
     ???
   }
 
+  /*
+     returns spark DataType for external catalog string representation. Mapping follows the rule strip("Type").lowercase
+     eg. "integer" -> "IntegerType"
+   */
+  def DataTypeFromName (name: String) : DataType ={
+    ???
+  }
 }
