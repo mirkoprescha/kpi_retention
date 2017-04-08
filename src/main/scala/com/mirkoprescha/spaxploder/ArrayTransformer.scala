@@ -10,9 +10,9 @@ import org.apache.spark.sql.functions.col
 class ArrayTransformer {
   def explodedArray(
                      inputArray: DataFrame,
-                     arrayName: String,
-                     primaryKey: String
+                     primaryKey: String ,
+                       arrayName: String
                            )(implicit spark: SparkSession): DataFrame = {
-    inputArray.select(col(arrayName), explode(col(arrayName)))
+    inputArray.select(col(primaryKey), explode(col(arrayName)).as(arrayName))
   }
 }

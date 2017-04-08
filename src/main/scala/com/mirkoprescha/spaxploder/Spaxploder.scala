@@ -27,19 +27,21 @@ object Spaxploder {
   }
 
   def run(inputPath: String,
-           inputFileformat: String,
+          inputFileformat: String,
           primaryKey: String,
           primaryKeyDataType: String,
           arrayName: String,
           arrayElementDataType: String,
           outputPath: String,
-          outputFileformat: String,
-           schema: Option[StructType])(implicit spark: SparkSession) = {
+          outputFileformat: String)(implicit spark: SparkSession) = {
 
     val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
     println ("generated schema for primary key and array is " + schema)
+    println (s"Start reading input with array from $inputPath")
     val inputArray = new ArrayReader().arrayFromInputPath(inputPath,inputFileformat,arrayName,primaryKey,schema)
+    println ("Start converting array values into rows")
     val explodedArray = new ArrayTransformer().explodedArray(inputArray,primaryKey,arrayName)
+    println (s"Start writing array values as rows into $outputPath as $outputFileformat")
     new ArrayWriter().writeArray(outputPath,outputFileformat,explodedArray)
   }
 
