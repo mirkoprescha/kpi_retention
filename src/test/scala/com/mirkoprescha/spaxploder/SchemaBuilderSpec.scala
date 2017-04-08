@@ -38,7 +38,7 @@ class SchemaBuilderSpec extends FlatSpec with MustMatchers {
   val sb = new SchemaBuilder()
 
   it must "create schema with an array of String-Elements" in {
-    val underTest: StructType = sb.idArraySchema(primaryKey = "id", primaryKeyTypeName = "long", arrayName =  "myArray",arrayElementTypeName =  "string")
+    val underTest  = sb.idArraySchema(primaryKey = "id", primaryKeyTypeName = "long", arrayName =  "myArray",arrayElementTypeName =  "string").get
     val expected: StructType = new StructType().add("id","long").add("myArray",DataTypes.createArrayType(StringType))
     println(expected)
     println(underTest)

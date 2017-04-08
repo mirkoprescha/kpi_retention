@@ -2,6 +2,8 @@ package com.mirkoprescha.spaxploder
 
 import net.sourceforge.argparse4j.ArgumentParsers
 import net.sourceforge.argparse4j.inf.{ArgumentParser, ArgumentParserException, Namespace}
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.StructType
 
 
 object Spaxploder {
@@ -18,25 +20,32 @@ object Spaxploder {
     val outputPath = parsedArgs.getString("output.path")
     val outputFileformat = parsedArgs.getString("output.fileformat")
 
-    if (!primaryKeyDataType.isEmpty && !arrayElementDataType.isEmpty) {
-      val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
-    }
-    else
-      ???
+    val spark = SparkSession.builder().appName("Spaxploder").getOrCreate()
 
 
-
-//    val rawArray = new ArrayReader().rawArrayFromInputPath(inputPath,inputFileformat,arrayName, primaryKey)
-//    val explodedArray = new ArrayTransformer().explodedArray(rawArray,arrayName, primaryKey)
+    spark.stop()
   }
 
-  def run () = {
+  def run(inputPath: String,
+           inputFileformat: String,
+          primaryKey: String,
+          primaryKeyDataType: String,
+          arrayName: String,
+          arrayElementDataType: String,
+          outputPath: String,
+          outputFileformat: String,
+           schema: Option[StructType])(implicit spark: SparkSession) = {
 
+    val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
+    println ("generated schema for primary key and array is " + schema)
+    val inputArray = new ArrayReader().arrayFromInputPath(inputPath,inputFileformat,arrayName,primaryKey,schema)
+    val explodedArray = new ArrayTransformer().explodedArray(inputArray,primaryKey,arrayName)
+    new ArrayWriter().writeArray(outputPath,outputFileformat,explodedArray)
   }
 
-  def useInputSchema (primaryKeyDataType: String,arrayElementDataType:String) = {
 
-  }
+
+
 
   def parseArgs(args: Array[String]): Namespace = {
     val parser: ArgumentParser = ArgumentParsers.newArgumentParser("spaxploder").description("SPark Array eXPLODER - convert array values into rows").defaultHelp(true)

@@ -21,8 +21,17 @@ class SchemaBuilder {
                               primaryKeyTypeName: String,
                               arrayName: String,
                               arrayElementTypeName: String
-                            ) : StructType = {
-    new StructType().add(primaryKey,primaryKeyTypeName).add(arrayName,DataTypeFromName("array",arrayElementTypeName))
+                            ) : Option[StructType] = {
+
+    if (!primaryKeyTypeName.isEmpty && !arrayElementTypeName.isEmpty) {
+     // val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
+      Some(new StructType().add(primaryKey,primaryKeyTypeName).add(arrayName,DataTypeFromName("array",arrayElementTypeName)))
+     // println ("generated schema for primary key and array is " + schema)
+    }
+    else
+      None
+
+
   }
 
   /*
