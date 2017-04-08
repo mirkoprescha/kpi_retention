@@ -66,6 +66,7 @@ spark based array exploder - convert array values into rows
     ],
 ```
 - optionally schema enforcement -> reliable data structures over time
+ -> And don't overwrite output path with empty dataframe in case of accidently provided wrong array or primary keyname
 - Flatten array as string and reach trough of all other attributes.
 
 ## Open decisions

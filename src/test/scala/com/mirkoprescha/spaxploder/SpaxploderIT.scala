@@ -5,11 +5,12 @@ import org.scalatest.{MustMatchers, FlatSpec}
 
 class SpaxploderIT extends FlatSpec with LocalSpark with MustMatchers {
 
-  behavior of "SpaxploderIT"
+  behavior of "SpaxploderIT with Schema"
 
   it should "read json file with array containing long-elements and explode it to rows" in {
     val inputFile = getClass.getResource("/input/json/idArrayOfLong.json").getFile
     val outputPath = getClass.getResource("/").getFile + "output"
+
 
     Spaxploder.run(inputPath = inputFile,inputFileformat = "json", primaryKey = "id"
       , primaryKeyDataType = "string",arrayName = "myNumbers", arrayElementDataType = "long",outputPath = outputPath,outputFileformat = "json")

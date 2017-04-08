@@ -13,6 +13,7 @@ class ArrayTransformer {
                      primaryKey: String ,
                        arrayName: String
                            )(implicit spark: SparkSession): DataFrame = {
+    println(s"explode array $arrayName and keep primary key $primaryKey")
     inputArray.select(col(primaryKey), explode(col(arrayName)).as(arrayName))
   }
 }

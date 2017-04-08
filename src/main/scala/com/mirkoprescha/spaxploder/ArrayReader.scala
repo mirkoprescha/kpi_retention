@@ -13,9 +13,16 @@ class ArrayReader {
                               primaryKey: String,
                               schema: Option[StructType]
                             )(implicit spark: SparkSession): Dataset[Row] = {
+    println (s"Read from $inputPath and  select columns $arrayName and $primaryKey ")
     schema match {
-      case Some(schema) =>  spark.read.schema(schema).format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
-      case None =>  spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
+      case Some(schema) =>  {
+        println ("Read with generated schema")
+        spark.read.schema(schema).format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
+      }
+      case None => {
+        println ("read without schema")
+        spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
+      }
     }
 //    val df: Dataset[Row] = spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
    // df
