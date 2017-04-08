@@ -30,7 +30,7 @@ class ArrayTransformerSpec extends FlatSpec  with MustMatchers  with TestArrays 
   "read from file" must "be converted in rows" in {
     val schema = new StructType().add("id2",StringType).add("id",StringType).add("myArray",ArrayType(IntegerType))
     //    import spark.implicits
-     val df = spark.read.schema(schema).json("/home/mirko/IdeaProjects/spaxploder/src/test/resources/simpleJson.json")
+     val df = spark.read.schema(schema).json("/home/mirko/IdeaProjects/spaxploder/src/test/resources/idArrayOfLong.json")
     df.show()
     df.printSchema()
 

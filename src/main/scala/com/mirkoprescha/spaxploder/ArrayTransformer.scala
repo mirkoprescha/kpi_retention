@@ -1,7 +1,7 @@
 package com.mirkoprescha.spaxploder
 
 import org.apache.spark.sql._
-import org.apache.spark.sql.functions.posexplode
+import org.apache.spark.sql.functions.explode
 import org.apache.spark.sql.functions.col
 
 /**
@@ -9,10 +9,10 @@ import org.apache.spark.sql.functions.col
   */
 class ArrayTransformer {
   def explodedArray(
-                             rawArray: DataFrame,
-                             arrayName: String,
-                             primaryKey: String
+                     inputArray: DataFrame,
+                     arrayName: String,
+                     primaryKey: String
                            )(implicit spark: SparkSession): DataFrame = {
-    rawArray.select(col(arrayName), posexplode(col(arrayName)))
+    inputArray.select(col(arrayName), explode(col(arrayName)))
   }
 }
