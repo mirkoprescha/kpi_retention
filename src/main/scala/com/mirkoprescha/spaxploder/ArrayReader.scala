@@ -16,7 +16,8 @@ class ArrayReader {
     schema match {
       case Some(schema) =>  {
         println (s"Read with generated schema $schema")
-        spark.read.schema(schema).format(inputFileformat).load(inputPath)
+//        spark.read.schema(schema).option("MODE", "DROPMALFORMED").format(inputFileformat).load(inputPath)
+        spark.read.schema(schema).option("mode", "FAILFAST").json(inputPath)
       }
       case None => {
         println ("read without schema")

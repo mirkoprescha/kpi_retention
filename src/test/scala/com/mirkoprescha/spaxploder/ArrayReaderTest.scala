@@ -6,17 +6,18 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
 
 
   val inputFile = getClass.getResource("/input/json/idArrayOfLong.json").getFile
+  val inputFileParquet = getClass.getResource("/input/parquet/").getFile
   val schemaCorrect = new SchemaBuilder().idArraySchema(
     primaryKey = "id",
-    primaryKeyTypeName ="String",
+    primaryKeyTypeName ="string",
     arrayName = "myNumbers",
     arrayElementTypeName = "long"
   )
 
   val schemaWrong = new SchemaBuilder().idArraySchema(
     primaryKey = "idXXX",
-    primaryKeyTypeName ="String",
-    arrayName = "myNumbers",
+    primaryKeyTypeName ="string",
+    arrayName = "myNumbersXX",
     arrayElementTypeName = "boolean"
   )
 
@@ -37,7 +38,7 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
   }
 
   // Not as expected..should fail!!
-  it should "not read inputfiles if schema does not matches input data" in {
+  it should "not read json inputfiles if schema does not matches input data" in {
     val ds = ar.dsFromInputPath(inputPath = inputFile,inputFileformat = "json", schema = schemaWrong)
     ds.show(false)
     ds.printSchema()
@@ -46,6 +47,15 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
    // ar.select ("id").show()
     //ar.filter("id=1")/*.filter("myNumbers=Array(1,0)'")*/.count must be (1)
 
+  }
+
+  // Not as expected..should fail!!
+
+  it should "not read parquet inputfiles if schema does not matches input data" in {
+    val ds = ar.dsFromInputPath(inputPath = inputFileParquet,inputFileformat = "parquet", schema = schemaWrong)
+    ds.show(false)
+    ds.printSchema()
+    ds.count must be (4)
   }
 
   // OK

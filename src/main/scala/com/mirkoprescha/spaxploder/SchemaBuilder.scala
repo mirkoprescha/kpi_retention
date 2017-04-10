@@ -36,7 +36,7 @@ class SchemaBuilder {
   }
 
   /*
-     returns spark DataType for external catalog string representation. Mapping follows the rule strip("Type").lowercase
+     returns spark DataType for Json serialization type. Mapping follows the rule strip("Type").lowercase
      eg. "integer" -> "IntegerType"
    */
   def DataTypeFromName (name: String) : DataType ={

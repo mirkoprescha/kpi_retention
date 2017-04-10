@@ -3,11 +3,11 @@ package com.mirkoprescha.spaxploder
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Row}
 import org.apache.spark.sql.types._
-import org.scalatest.{MustMatchers, FlatSpec}
+import org.scalatest.{Suite, MustMatchers, FlatSpec}
 import org.scalatest.Assertions._
 
 
-class ArrayTransformerSpec extends FlatSpec  with MustMatchers  with TestArrays with LocalSpark{
+class ArrayTransformerSpec extends FlatSpec  with Suite with MustMatchers  with TestArrays with LocalSpark{
   val stringIdArrayOfString = new StructType().add("id",StringType).add("myArray",ArrayType(StringType))
   val stringIdArrayOfInteger = new StructType().add("id",StringType).add("myArray",ArrayType(IntegerType))
   val arrayOfStructSchema = new StructType().add("id",StringType).add("myArray",ArrayType(StructType(Seq(StructField("id",StringType)))))
