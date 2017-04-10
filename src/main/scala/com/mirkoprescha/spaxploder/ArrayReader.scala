@@ -6,39 +6,32 @@ import org.apache.spark.sql.types.StructType
 
 class ArrayReader {
 
-  def arrayFromInputPath(
+  def dsFromInputPath(
                               inputPath: String,
                               inputFileformat: String,
-                              arrayName: String,
-                              primaryKey: String,
+
                               schema: Option[StructType]
                             )(implicit spark: SparkSession): Dataset[Row] = {
-    println (s"Read from $inputPath and  select columns $arrayName and $primaryKey ")
+    println (s"Read from $inputPath ")
     schema match {
       case Some(schema) =>  {
-        println ("Read with generated schema")
-        spark.read.schema(schema).format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
+        println (s"Read with generated schema $schema")
+        spark.read.schema(schema).format(inputFileformat).load(inputPath)
       }
       case None => {
         println ("read without schema")
-        spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
+        spark.read.format(inputFileformat).load(inputPath)
       }
     }
-//    val df: Dataset[Row] = spark.read.format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
-   // df
   }
 
-//
-//  def schemaValidatedArrayFromInputPath(
-//                             inputPath: String,
-//                             inputFileformat: String,
-//                             arrayName: String,
-//                             primaryKey: String,
-//                             schema: StructType
-//                           )(implicit spark: SparkSession): Dataset[Row] = {
-//    val df: Dataset[Row] = spark.read.schema(schema).format(inputFileformat).load(inputPath).select(primaryKey, arrayName)
-//    schema.fields(0).name
-//    df
-//  }
+
+  def idArrayFromDS(ds:  Dataset[Row],
+                    arrayName: String,
+                    primaryKey: String
+                   )(implicit spark: SparkSession): Dataset[Row] = {
+    println (s"select columns $arrayName and $primaryKey from input dataset")
+    ds.select(primaryKey, arrayName)
+  }
 
 }

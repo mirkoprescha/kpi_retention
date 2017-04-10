@@ -24,11 +24,12 @@ class SchemaBuilder {
                             ) : Option[StructType] = {
 
     if (!Option(primaryKeyTypeName).getOrElse("").isEmpty &&  !Option(arrayElementTypeName).getOrElse("").isEmpty) {
-     // val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
-      Some(new StructType().add(primaryKey,primaryKeyTypeName).add(arrayName,DataTypeFromName("array",arrayElementTypeName)))
-     // println ("generated schema for primary key and array is " + schema)
+      val schema = new StructType().add(primaryKey,primaryKeyTypeName,nullable = false).add(arrayName,DataTypeFromName("array",arrayElementTypeName))
+      println (s"Schema generated for $primaryKey and $arrayName is $schema")
+      return Some(schema)
     }
     else
+      println ("No Schema generated")
       None
 
 

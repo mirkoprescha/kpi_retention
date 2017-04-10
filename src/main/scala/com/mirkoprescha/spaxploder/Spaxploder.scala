@@ -3,7 +3,6 @@ package com.mirkoprescha.spaxploder
 import net.sourceforge.argparse4j.ArgumentParsers
 import net.sourceforge.argparse4j.inf.{ArgumentParser, ArgumentParserException, Namespace}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.StructType
 
 
 object Spaxploder {
@@ -29,16 +28,18 @@ object Spaxploder {
   def run(inputPath: String,
           inputFileformat: String,
           primaryKey: String,
-          primaryKeyDataType: String,
+          primaryKeyDataType: String = null,
           arrayName: String,
-          arrayElementDataType: String,
+          arrayElementDataType: String = null,
           outputPath: String,
           outputFileformat: String)(implicit spark: SparkSession) = {
 
+    println ("Start generating schema for primary key and array in input")
     val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
-    println ("generated schema for primary key and array is " + schema)
-    println (s"Start reading input with array from $inputPath")
-    val inputArray = new ArrayReader().arrayFromInputPath(inputPath,inputFileformat,arrayName,primaryKey,schema)
+    println (s"Start reading input files from $inputPath into ds")
+    val inputDS = new ArrayReader().dsFromInputPath(inputPath,inputFileformat,schema)
+    println (s"Start reading $primaryKey and $arrayName from ds")
+    val inputArray = new ArrayReader().idArrayFromDS(inputDS,arrayName,primaryKey)
     println ("Start converting array values into rows")
     val explodedArray = new ArrayTransformer().explodedArray(inputArray,primaryKey,arrayName)
     println (s"Start writing array values as rows into $outputPath as $outputFileformat")
