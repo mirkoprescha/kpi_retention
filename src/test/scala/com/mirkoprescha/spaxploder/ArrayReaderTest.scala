@@ -71,4 +71,12 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
     underTest.count must be (4)
   }
 
+
+  it should "select id and a nested array from input dataset" in {
+    val ds = ar.dsFromInputPath(inputPath = inputFile,inputFileformat = "json", schema = None)
+    val underTest = ar.idArrayFromDS(ds,"myNumbers",primaryKey = "id")
+    underTest.columns  must be (Array ("id","myNumbers"))
+    underTest.count must be (4)
+  }
+
 }

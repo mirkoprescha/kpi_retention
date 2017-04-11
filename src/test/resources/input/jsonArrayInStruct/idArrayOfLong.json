@@ -1,0 +1,4 @@
+{"id" : "1", "attributeToIgnore": "A", "myStruct":{"myLong" : 1, "myNumbers" : [1,0]}  }
+{"id" : "2", "attributeToIgnore": "B", "myStruct":{"myLong" : 2, "myNumbers" : [4,0]} }
+{"id" : "3", "attributeToIgnore": "E", "myStruct":{"myLong" : 3, "myNumbers" : null} }
+{"id" : "4", "attributeToIgnore": "D", "myStruct":{"myLong" : 4 } }
