@@ -1,9 +1,9 @@
 package com.mirkoprescha.spaxploder
 
 import org.apache.spark.sql.types._
-import org.scalatest.{MustMatchers, FlatSpec}
+import org.scalatest.{Suite, MustMatchers, FlatSpec}
 
-class SchemaBuilderSpec extends FlatSpec with MustMatchers {
+class SchemaBuilderSpec extends FlatSpec with Suite with MustMatchers {
   val datatypes = Seq(NullType,ByteType,ShortType ,IntegerType, LongType, FloatType, DoubleType,StringType,BinaryType,BooleanType, DateType,TimestampType)
   val dataTypeNames = datatypes.map(t => t -> t.typeName)
 
@@ -39,7 +39,7 @@ class SchemaBuilderSpec extends FlatSpec with MustMatchers {
 
   it must "create schema with an array of String-Elements" in {
     val underTest  = sb.idArraySchema(primaryKey = "id", primaryKeyTypeName = "long", arrayName =  "myArray",arrayElementTypeName =  "string").get
-    val expected: StructType = new StructType().add("id","long").add("myArray",DataTypes.createArrayType(StringType))
+    val expected: StructType = new StructType().add("id","long",nullable = false).add("myArray",DataTypes.createArrayType(StringType))
     println(expected)
     println(underTest)
     underTest must be  (expected)

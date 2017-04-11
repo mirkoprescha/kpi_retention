@@ -1,9 +1,9 @@
 package com.mirkoprescha.spaxploder
 
-import org.scalatest.{MustMatchers, FlatSpec}
+import org.scalatest.{Suite, MustMatchers, FlatSpec}
 
 
-class SpaxploderIT extends FlatSpec with LocalSpark with MustMatchers {
+class SpaxploderIT extends FlatSpec with Suite with LocalSpark with MustMatchers {
 
   behavior of "SpaxploderIT with correct attributes to generate Schema"
 
