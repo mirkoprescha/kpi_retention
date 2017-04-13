@@ -115,6 +115,14 @@ Spaxploder will ignore these entities without an exception.
 ```
 - optionally schema enforcement -> reliable data structures over time
  -> Thus don't overwrite output path with possibly empty dataframe in case of accidently provided wrong array or primary keyname
+
+  - Problems so far with schema
+    - Applied schema to dataframe just defines column names and col types that can be used for operations.
+    - At same time applying a schema with non-nullable StructType is always handled as nullable.
+    - Thus no matter what we define in schema, reading a source file always succeed providing null values for all columns that are not found in file.
+    - schema enforcment works for attributes defined in schema that are found in source file. With using "mode" as dataframeReader option the datatype can be enforced.
+    - finally we need to implement a way to check if defined attributes are present in file.
+
 - support nested arrays
 ```
 "friends": [
