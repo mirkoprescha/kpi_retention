@@ -14,9 +14,9 @@ object Spaxploder {
     val inputPath = parsedArgs.getString("input.path")
     val inputFileformat = parsedArgs.getString("input.fileformat")
     val primaryKey = parsedArgs.getString("primary.key")
-    val primaryKeyDataType = parsedArgs.getString("primarykey.datatype")
+    val primaryKeyDataType = parsedArgs.getString("primary.key.datatype")
     val arrayName = parsedArgs.getString("array.name")
-    val arrayElementDataType = parsedArgs.getString("array-.element.datatype")
+    val arrayElementDataType = parsedArgs.getString("array.element.datatype")
     val outputPath = parsedArgs.getString("output.path")
     val outputFileformat = parsedArgs.getString("output.fileformat")
 
@@ -46,7 +46,7 @@ object Spaxploder {
           outputPath: String,
           outputFileformat: String)(implicit spark: SparkSession) = {
 
-    println ("Start generating schema for primary key and array in input")
+    println (s"Start generating schema for primary key $primaryKey (type: $primaryKeyDataType) and array $arrayName (element-type: $arrayElementDataType)")
     val schema = new SchemaBuilder().idArraySchema(primaryKey,primaryKeyDataType,arrayName,arrayElementDataType)
     println (s"Start reading input files from $inputPath into ds")
     val inputDS = new ArrayReader().dsFromInputPath(inputPath,inputFileformat,schema)
