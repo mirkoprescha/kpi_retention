@@ -26,13 +26,61 @@ Output Dataset:
 "id": 1, "tags":  "eu"
 ```
 
+## Test in Docker
+```
+sbt assemble
+docker run -it -p 8088:8080   mirkoprescha/spark-zeppelin
+
+docker cp src/test/resources/input/json/idArrayOfLong.json $(docker ps  -l -q):/home/
+docker cp target/scala-2.11/*.jar $(docker ps  -l -q):/home/
+
+
+spark-submit \
+--class com.mirkoprescha.spaxploder.Spaxploder spaxploder-assembly-1.0.jar \
+--input.path idArrayOfLong.json  \
+--input.fileformat json          \
+--primary.key id                  \
+--primary.key.datatype string     \
+--array.name myNumbers           \
+--array.element.datatype long    \
+--output.path /home/output       \
+--output.fileformat json
+```
+
 ## Usage
 Spaxploder is a spark application intended to be started with `spark-submit`
 
 ```
-spark-submit
 
 
+
+usage: spaxploder [-h] --input-path INPUT_PATH [--input-fileformat {parquet,json}]
+                  --primarykey PRIMARYKEY [--primarykey-datatype PRIMARYKEY_DATATYPE]
+                  --array-name ARRAY_NAME
+                  [--array-element-datatype ARRAY_ELEMENT_DATATYPE]
+                  --output-path OUTPUT_PATH [--output-fileformat {parquet,json}]
+
+SPark Array eXPLODER - convert array values into rows
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --input-path INPUT_PATH
+                         path to input files containing array
+  --input-fileformat {parquet,json}
+                         fileformat of input files
+  --primarykey PRIMARYKEY
+                         field name of the id to reference entity of parent row
+  --primarykey-datatype PRIMARYKEY_DATATYPE
+                         datatype-name of id (e.g. int, long, string)
+  --array-name ARRAY_NAME
+                         field name of the array that values will be converted into rows
+  --array-element-datatype ARRAY_ELEMENT_DATATYPE
+                         datatype-name of elements in the  array (e.g. int, long, string,
+                         double, boolean)
+  --output-path OUTPUT_PATH
+                         path to output of exploded array values
+  --output-fileformat {parquet,json}
+                         fileformat of output
 ```
 
 
