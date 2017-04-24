@@ -1,0 +1,5 @@
+{"id" : "1", "myInt": 1  , "attributeToIgnore": "A", "myNumbers" : [1,0]}
+{"id" : "2", "myInt": X  , "attributeToIgnore": "B", "myNumbers" : [4,0]}
+{"id" : "3", "myInt": "A", "attributeToIgnore": "E", "myNumbers" : null}
+{"id" : "4", "myInt": 4  , "attributeToIgnore": "D"}
+{"id" : "5",  "attributeToIgnore": "D"}

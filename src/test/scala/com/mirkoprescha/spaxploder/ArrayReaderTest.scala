@@ -2,10 +2,12 @@ package com.mirkoprescha.spaxploder
 
 import org.scalatest.{Suite, MustMatchers, FlatSpec}
 
+import org.apache.spark.sql.functions._
 class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatchers{
 
 
   val inputFile = getClass.getResource("/input/json/idArrayOfLong.json").getFile
+  val inputFileCorrupt = getClass.getResource("/input/jsonWithWrongRows/idArrayOfLong.json").getFile
   val inputFileParquet = getClass.getResource("/input/parquet/").getFile
   val schemaCorrect = new SchemaBuilder().idArraySchema(
     primaryKey = "id",
@@ -40,6 +42,8 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
   // Todo: Not as expected..should fail!!
   it should "not read json inputfiles if schema does not matches input data" ignore {
     val ds = ar.dsFromInputPath(inputPath = inputFile,inputFileformat = "json", schema = schemaWrong)
+//    val underTest = ar.idArrayFromDS(ds,"NOT_HERE",primaryKey = "id")
+//    underTest.show
     ds.show(false)
     ds.printSchema()
     ds.count must be (4)
@@ -79,4 +83,30 @@ class ArrayReaderTest  extends FlatSpec with Suite with LocalSpark with MustMatc
     underTest.count must be (4)
   }
 
+  //todo: distinguish between all rows and some rpows
+  it should "fail if provided column name is not in input" ignore {
+    val ds = ar.dsFromInputPath(inputPath = inputFile,inputFileformat = "json", schema = None)
+    val underTest = ar.idArrayFromDS(ds,"NOT_HERE",primaryKey = "id")
+    underTest.show
+    underTest.columns  must be (Array ("id","myNumbers"))
+    underTest.count must be (4)
+  }
+
+  //todo:
+  it should "ignore rows with string values where integer is expected" in {
+    val schema  = new SchemaBuilder().idArraySchema(
+      primaryKey = "myInt",
+      primaryKeyTypeName ="integer",
+      arrayName = "myNumbers",
+      arrayElementTypeName = "integer"
+    )
+    val ds = ar.dsFromInputPath(inputPath = inputFileCorrupt,inputFileformat = "json", schema = schema)
+    ds.show()
+    ds.printSchema()
+    val underTest = ar.idArrayFromDS(ds,"myNumbers",primaryKey = "myInt")
+    ds.agg(sum(col("myInt"))).show
+    underTest.show
+    underTest.columns  must be (Array ("myInt","myNumbers"))
+
+  }
 }
