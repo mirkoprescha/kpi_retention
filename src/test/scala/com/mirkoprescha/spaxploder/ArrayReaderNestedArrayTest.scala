@@ -11,7 +11,7 @@ class ArrayReaderNestedArrayTest  extends FlatSpec with Suite with LocalSpark wi
   val schemaCorrect = new SchemaBuilder().idArraySchema(
     primaryKey = "id",
     primaryKeyTypeName ="string",
-    arrayName = "myStruct.myNumbers",
+    arrayName = "myStruct.myNumbers", // dot gets part of name -> real struct needs to be created that contains the array
     arrayElementTypeName = "long"
   )
 

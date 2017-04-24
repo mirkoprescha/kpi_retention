@@ -76,7 +76,7 @@ spark-submit \
 ## Features
 
 - supports `parquet` and `json` as input and output fileformat
-- transform an array that is inside a struct. Therefore just provide complete attribute-hierarchy as array name (e.g. myStruct.myNumbers)
+- transform an array that is inside a struct. Therefore just provide complete attribute-hierarchy as array name (e.g. myStruct.myNumbers). Works only if no schema is provided!
 ```
 {"id" : 1,  "myStruct":{"myLong" : 1, "myNumbers" : [1,0]}  }
 ```
@@ -146,7 +146,7 @@ Spaxploder will ignore these entities without an exception.
       }
     ],
 ```
-- Flatten array as string and reach through of all other attributes.
+- just Flatten array as string and pass through  together with all other attributes.
 
 
 ## compile sources
