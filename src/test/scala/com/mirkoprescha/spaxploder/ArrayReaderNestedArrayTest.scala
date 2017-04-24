@@ -1,5 +1,7 @@
 package com.mirkoprescha.spaxploder
 
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.functions._
 import org.scalatest.{FlatSpec, MustMatchers, Suite}
 
 class ArrayReaderNestedArrayTest  extends FlatSpec with Suite with LocalSpark with MustMatchers{
@@ -25,13 +27,14 @@ class ArrayReaderNestedArrayTest  extends FlatSpec with Suite with LocalSpark wi
     underTest.printSchema()
     underTest.columns  must be (Array ("id","myNumbers"))
     underTest.count must be (4)
+    underTest.filter("id=1").select("myNumbers").collect()(0)(0) must be (Array(1,0))
   }
 
-  it should "select id and a nested array from input dataset with provided schema" ignore {
+  it should "select id and a nested array from input dataset with provided schema" in {
     val ds = ar.dsFromInputPath(inputPath = inputFile,inputFileformat = "json", schema = schemaCorrect)
     ds.show()
     ds.printSchema()
-    val underTest = ar.idArrayFromDS(ds,"myStruct.myNumbers",primaryKey = "id")
+    val underTest = ar.idArrayFromDS(ds,"myNumbers",primaryKey = "id")
     underTest.show()
     underTest.printSchema()
     underTest.columns  must be (Array ("id","myNumbers"))
