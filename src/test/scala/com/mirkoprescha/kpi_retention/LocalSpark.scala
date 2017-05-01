@@ -1,4 +1,4 @@
-package com.mirkoprescha.spaxploder
+package com.mirkoprescha.kpi_retention
 
 
 import org.apache.log4j.{Level, Logger}
