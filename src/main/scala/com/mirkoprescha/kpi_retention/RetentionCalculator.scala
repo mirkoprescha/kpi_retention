@@ -18,12 +18,21 @@ class RetentionCalculator   {
 
     val userEvents: Dataset[(User, Event)] = users.joinWith(events , $"user_id" === $"principal" ,"left_outer")
     userEvents.printSchema()
-
+    userEvents.createOrReplaceTempView("userEvents")
 //http://stackoverflow.com/questions/39946210/spark-2-0-datasets-groupbykey-and-divide-operation-and-type-safety
-    userEvents.groupBy("user_id").min("")
+    //userEvents.groupBy("user_id").min("")
+    val firstEvent = spark.sql("select user_id, min (first_event) as first_event from (" +
+  "select _1.user_id, first_value(_2.request_uri) over (partition by _1.user_id order by _2.event_ts) as first_event from userEvents)" +
+  "group by user_id  ")
+    firstEvent.show()
 
-    val userEventsDate =userEvents.map(x => { (x._1.user_id ,x._1.created_on_ts, x._1.created_on_ts.toString)})
-    userEventsDate.show()
+    val ret1 = spark.sql(s"select _1.user_id,  _2.event_ts - _1.created_on_ts as days , first_value(_2.request_uri) over (partition by _1.user_id order by _2.event_ts) as first_event" +
+      " from userEvents" +
+      s" where days = $dayOfReturn")
+    ret1.show()
+
+      //val userEventsDate =userEvents.map(x => { (x._1.user_id ,x._1.created_on_ts, x._1.created_on_ts.toString)})
+    //userEventsDate.show()
 
 
     ???
